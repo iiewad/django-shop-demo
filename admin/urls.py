@@ -15,8 +15,15 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path
-from admin.views import index
+from admin.views import index, users
 
 urlpatterns = [
     path('', index.index, name="admin_index"),
+
+    path('users/', users.index, name="admin_users_index"),
+    path('users/add/', users.add, name="admin_users_add"),
+    path('users/insert/', users.insert, name="admin_users_insert"),
+    path('users/del/<int:uid>/', users.delete, name="admin_users_delete"),
+    path('users/edit/<int:uid>/', users.edit, name="admin_users_edit"),
+    path('users/update/<int:uid>/', users.update, name="admin_users_update"),
 ]
