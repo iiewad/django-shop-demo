@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'common.shopmiddleware.ShopMiddleware',     #注册中间件
+
 ]
 
 ROOT_URLCONF = 'django_shop_demo.urls'

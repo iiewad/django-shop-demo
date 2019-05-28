@@ -44,7 +44,7 @@ def delete(request, uid):
         context = {'info':'删除成功！'}
     except:
         context = {'info':'删除失败！'}
-    return render(request,"myadmin/info.html",context)
+    return render(request,"admin/info.html",context)
 
 def edit(request, uid):
     try:

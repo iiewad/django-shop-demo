@@ -18,7 +18,9 @@ from django.urls import path
 from admin.views import index, users
 
 urlpatterns = [
-    path('', index.index, name="admin_index"),
+    path('login', index.login, name="admin_login"),
+    path('dologin', index.dologin, name="admin_dologin"),
+    path('logout', index.logout, name="admin_logout"),
 
     path('users/', users.index, name="admin_users_index"),
     path('users/add/', users.add, name="admin_users_add"),
@@ -26,4 +28,7 @@ urlpatterns = [
     path('users/del/<int:uid>/', users.delete, name="admin_users_delete"),
     path('users/edit/<int:uid>/', users.edit, name="admin_users_edit"),
     path('users/update/<int:uid>/', users.update, name="admin_users_update"),
+
+    path('', index.index, name="admin_index"),
+    
 ]
