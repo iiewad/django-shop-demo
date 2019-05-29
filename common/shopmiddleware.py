@@ -8,7 +8,7 @@ class ShopMiddleware(object):
         self.get_response = get_response
     
     def __call__(self, request):
-        urllist = ['/admin/login', '/admin/dologin', '/admin/logout']
+        urllist = ['/admin/login', '/admin/dologin', '/admin/logout', '/admin/verify']
         path = request.path
 
         if re.match("/admin", path) and (path not in urllist):

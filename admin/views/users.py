@@ -48,7 +48,7 @@ def delete(request, uid):
 
 def edit(request, uid):
     try:
-        ob = Uesrs.objcts.get(id=uid)
+        ob = Users.objcts.get(id=uid)
         context = {'user': ob}
         return render(request, 'admin/user/edit.html', context)
     except Exception as err:

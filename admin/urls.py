@@ -18,6 +18,7 @@ from django.urls import path
 from admin.views import index, users
 
 urlpatterns = [
+    path('verify', index.verify, name="admin_verify"),
     path('login', index.login, name="admin_login"),
     path('dologin', index.dologin, name="admin_dologin"),
     path('logout', index.logout, name="admin_logout"),
@@ -30,5 +31,5 @@ urlpatterns = [
     path('users/update/<int:uid>/', users.update, name="admin_users_update"),
 
     path('', index.index, name="admin_index"),
-    
+
 ]
