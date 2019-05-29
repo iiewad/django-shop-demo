@@ -15,9 +15,16 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path
-from admin.views import index, users
+from admin.views import index, users, type
 
 urlpatterns = [
+    path('type', type.index, name="admin_type_index"),
+    path('type/add/<int:tid>/', type.add, name="admin_type_add"),
+    path('type/insert/', type.insert, name="admin_type_insert"),
+    path('type/del/<int:tid>/', type.delete, name="admin_type_del"),
+    path('type/edit/<int:tid>/', type.edit, name="admin_type_edit"),
+    path('type/update/<int:tid>/', type.update, name="admin_type_update"),
+
     path('verify', index.verify, name="admin_verify"),
     path('login', index.login, name="admin_login"),
     path('dologin', index.dologin, name="admin_dologin"),

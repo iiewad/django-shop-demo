@@ -2,6 +2,15 @@ from django.db import models
 from datetime import datetime
 
 
+class Types(models.Model):
+    name = models.CharField(max_length=32)
+    pid = models.IntegerField(default=0)
+    path = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = "type"
+    
+
 # Create your models here.
 class Users(models.Model):
     username = models.CharField(max_length=32)
@@ -28,5 +37,5 @@ class Users(models.Model):
             'addtime':self.addtime
         }
 
-class Meta:
-    db_table = "users"
+    class Meta:
+        db_table = "users"
