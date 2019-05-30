@@ -15,9 +15,16 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path
-from admin.views import index, users, type
+from admin.views import index, users, type, goods
 
 urlpatterns = [
+    path('goods/', goods.index, name="admin_goods_index"),
+    path("goods/add/", goods.add, name="admin_goods_add"),
+    path("goods/insert/", goods.insert, name="admin_goods_insert"),
+    path("goods/del/<int:gid>/", goods.delete, name="admin_goods_del"),
+    path("goods/edit/<int:gid>/", goods.edit, name="admin_goods_edit"),
+    path("goods/update/<int:gid>/", goods.update, name="admin_goods_update"),
+
     path('type', type.index, name="admin_type_index"),
     path('type/add/<int:tid>/', type.add, name="admin_type_add"),
     path('type/insert/', type.insert, name="admin_type_insert"),
