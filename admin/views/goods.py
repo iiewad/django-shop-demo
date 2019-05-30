@@ -2,19 +2,65 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 from common.models import Types, Goods
 from PIL import Image
 from datetime import datetime
 import time,json,os
 
-def index(request):
-    list = Goods.objects.all()
-    for ob in list:
-        ty = Types.objects.get(id=ob.typeid)
-        ob.typename = ty.name
-    context = {"goodslist": list}
-    return render(request, "admin/goods/index.html", context)
+def index(request, pIndex):
+    tlist = Types.objects.extra(select={'_has': 'concat(path, id)'}).order_by('_has')
+    for ob in tlist:
+        ob.pname = '. . .'*(ob.path.count(',')-1)
+
+    mod = Goods.objects
+    mywhere = []
+
+    kw = request.GET.get("keyword", None)
+    if kw:
+        list = mod.filter(goods__contains=kw)
+        mywhere.append("keyword="+kw)
+    else:
+        list = mod.filter()
+    typeid = request.GET.get('typeid', '0')
+    if typeid != '0':
+        tids = Types.objects.filter(Q(id=typeid) | Q(pid=typeid)).values_list('id', flat=True)
+        list = list.filter(typeid__in = tids)
+        mywhere.append("typeid=" + typeid)
+    state = request.GET.get('state', '')
+    if state != '':
+        list = list.filter(state = state)
+        mywhere.append("state=" + state)
+
+    pIndex = int(pIndex)
+    page = Paginator(list, 5)
+    maxpages = page.num_pages
+
+    if pIndex > maxpages:
+        pIndex = maxpages
+    if pIndex < 1:
+        pIndex = 1
+    
+    list2 = page.page(pIndex)
+    plist = page.page_range
+
+    for vo in list2:
+        ty = Types.objects.get(id=vo.typeid)
+        vo.typename = ty.name
+
+    context = {
+        'typelist': tlist,
+        "goodslist": list2,
+        'plist': plist,
+        'pIndex': pIndex,
+        'maxpages': maxpages,
+        'mywhere': mywhere,
+        'typeid': int(typeid)
+    }
+
+    return render(request, 'admin/goods/index.html', context)
 
 def add(request):
     list = Types.objects.extra(select = {'_has': 'concat(path, id)'}).order_by('_has')

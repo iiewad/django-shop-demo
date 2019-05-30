@@ -18,7 +18,8 @@ from django.urls import path
 from admin.views import index, users, type, goods
 
 urlpatterns = [
-    path('goods/', goods.index, name="admin_goods_index"),
+    path("goods/<int:pIndex>/", goods.index, name="admin_goods_index"),
+    # path('goods/', goods.index, name="admin_goods_index"),
     path("goods/add/", goods.add, name="admin_goods_add"),
     path("goods/insert/", goods.insert, name="admin_goods_insert"),
     path("goods/del/<int:gid>/", goods.delete, name="admin_goods_del"),
