@@ -38,7 +38,9 @@ urlpatterns = [
     path('dologin', index.dologin, name="admin_dologin"),
     path('logout', index.logout, name="admin_logout"),
 
-    path('users/', users.index, name="admin_users_index"),
+    path('users/updatepw/<int:uid>/', users.updatepw, name="admin_users_updatepw"),
+    path('users/resetpw/<int:uid>/', users.resetpw, name="admin_users_resetpw"),
+    path('users/<int:pIndex>/', users.index, name="admin_users_index"),
     path('users/add/', users.add, name="admin_users_add"),
     path('users/insert/', users.insert, name="admin_users_insert"),
     path('users/del/<int:uid>/', users.delete, name="admin_users_delete"),

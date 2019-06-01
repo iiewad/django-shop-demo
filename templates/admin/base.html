@@ -83,16 +83,16 @@
                                 导航栏
                             </li>
                             <li class="active">
-                                <a href="index.htm"><i class="icon-white icon-home"></i> 首页</a>
+                                <a href="{% url 'admin_index' %}"><i class="icon-white icon-home"></i> 首页</a>
                             </li>
                             <li class="nav-header">
                                 会员管理
                             </li>
                             <li>
-                                <a href="#"><i class="icon-folder-open"></i> 浏览会员</a>
+                                <a href="{% url 'admin_users_index' 1 %}"><i class="icon-folder-open"></i> 浏览会员</a>
                             </li>
                             <li>
-                                <a href="#"><i class="icon-check"></i> 添加会员</a>
+                                <a href="{% url 'admin_users_add' %}"><i class="icon-check"></i> 添加会员</a>
                             </li>
                             <li class="nav-header">
                                 商品类别管理

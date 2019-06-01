@@ -1,13 +1,85 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 
 from common.models import Users
 from datetime import datetime
 
-def index(request):
-    list = Users.objects.all()
-    context = { "userlist": list }
+
+def updatepw(request, uid):
+    try:
+        ob = Users.objects.get(id=uid)
+        if request.POST['password'] != request.POST['repeat-password']:
+            context = {'info': '密码不匹配'}
+        else:
+            import hashlib
+            m = hashlib.md5()
+            m.update(bytes(request.POST['password'], encoding="utf8"))
+            ob.password = m.hexdigest()
+            ob.save()
+            context = {'info': '密码重置成功'}
+    except Exception as err:
+        print(err)
+        context = {'info': '密码重置失败'}
+    return render(request, 'admin/info.html', context)
+
+def resetpw(request, uid):
+    try:
+        #ob = Users.objects.values_list('username', 'name')
+        ob = Users.objects.get(id=uid)
+        context = {'user': ob}
+        return render(request, 'admin/users/resetpw.html', context)
+    except Exception as err:
+        print(err)
+        context = {'info': 'No Objects'}
+    return render(request, 'admin/info.html', context)
+
+def index(request, pIndex):
+    # sexlist = Users.objects.values('sex').distinct()
+   
+    mod = Users.objects
+    mywhere = []
+    kw = request.GET.get("keyword", None)
+    sexid = request.GET.get("sexid", None)
+    list = mod.filter()
+
+    if kw:
+        list = list.filter(username__contains=kw)
+        mywhere.append("keyword="+kw)
+    
+    if sexid:
+        list = list.filter(sex=sexid)
+        mywhere.append("sexid="+sexid)
+    
+
+    pIndex = int(pIndex)
+    page = Paginator(list, 5)
+    maxpages = page.num_pages
+    
+    if pIndex > maxpages:
+        page = maxpages
+    if pIndex < maxpages:
+        pIndex = 1
+    
+    list2 = page.page(pIndex)
+    plist = page.page_range
+
+    context = {
+        'userslist': list2,
+        'plist': plist,
+        'pIndex': pIndex,
+        'maxpages': maxpages,
+        'mywhere': mywhere
+    }
+
     return render(request, 'admin/users/index.html', context)
+    
+
+    """
+    list = Users.objects.all()
+    context = { "userslist": list }
+    return render(request, 'admin/users/index.html', context)
+    """
 
 def add(request):
     return render(request, 'admin/users/add.html')
@@ -48,9 +120,9 @@ def delete(request, uid):
 
 def edit(request, uid):
     try:
-        ob = Users.objcts.get(id=uid)
+        ob = Users.objects.get(id=uid)
         context = {'user': ob}
-        return render(request, 'admin/user/edit.html', context)
+        return render(request, 'admin/users/edit.html', context)
     except Exception as err:
         print(err)
         context = {'info': '没有找到要修改的信息'}
