@@ -41,7 +41,7 @@ def index(request, pIndex):
     mywhere = []
     kw = request.GET.get("keyword", None)
     sexid = request.GET.get("sexid", None)
-    list = mod.filter()
+    list = mod.order_by("username")
 
     if kw:
         list = list.filter(username__contains=kw)

@@ -7,7 +7,7 @@
 
     <form class="form-inline" action="{% url 'admin_users_index' 1 %}" method="get">
         <label>关键字：</label>
-        <input type="text" name="keyword" value="{{request.GET.keyword}}" class="input-small" placeholder="账号/姓名">
+        <input type="text" name="keyword" value="{% if request.GET.keyword %}{{ request.GET.keyword }}{% endif %}" class="input-small" placeholder="账号/姓名">
         <label> &nbsp; 性别：</label>
         <select name="sexid" class="span2">
             <option value="" {% if request.GET.sexid == '' %} selected {% endif %}>全部</option>
